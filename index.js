@@ -9,7 +9,7 @@ const authRouter = require("./routes/authRoute/authRoute");
 const URI = process.env.MONGODB_URI_STRING;
 const userRoute = require("./routes/userRoute/userRoute");
 const breakRoute = require("./routes/breakRoute/breakRoute");
-// const ipFilter = require("../backend/middleware/ipAddressAuthenticate/ipAddressAuthenticate");
+const ipFilter = require("../backend/middleware/ipAddressAuthenticate/ipAddressAuthenticate");
 
 // app.use(ipFilter);
 app.use(cors());
