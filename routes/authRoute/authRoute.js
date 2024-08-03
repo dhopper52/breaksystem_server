@@ -84,9 +84,7 @@ router.get("/getFloor", async (req, res) => {
 });
 
 router.get("/getFr", async (req, res) => {
-  return res
-    .status(500)
-    .json({ status: "failed", message: "internal server error" });
+  return res.send({ status: "failed", message: "internal server error" });
 });
 
 module.exports = router;
