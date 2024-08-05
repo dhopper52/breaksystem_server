@@ -37,7 +37,7 @@ const connectDB = (URI) => {
 
 const start = async () => {
   try {
-    // await connected(URI);
+    await connectDB(URI);
     app.listen(PORT, () => {
       console.log(`app is runing on ${port}`);
   });
