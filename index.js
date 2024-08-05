@@ -6,6 +6,7 @@ const app = express();
 const PORT = 5000;
 const cors = require("cors");
 const URI = process.env.MONGODB_URI_STRING;
+const Auth = require("./models/authModels/authModel");
 // const authRouter = require("./routes/authRoute/authRoute");
 // const userRoute = require("./routes/userRoute/userRoute");
 // const breakRoute = require("./routes/breakRoute/breakRoute");
