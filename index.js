@@ -13,6 +13,7 @@ const URI = process.env.MONGODB_URI_STRING;
 
 // app.use(ipFilter);
 app.use(cors());
+
 app.use(bodyParser.json());
 
 // app.use("/auth", authRouter);
