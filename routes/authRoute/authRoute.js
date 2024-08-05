@@ -7,35 +7,34 @@ const authenticateRole = require("../../middleware/authenticateRole/authenticate
 
 const jwtString = process.env.JWT_STRING;
 
-// router.post("/signup", authenticateRole, async (req, res) => {
-//   const { _id, floorName, password, role } = req.body;
+router.post("/signup", authenticateRole, async (req, res) => {
+  const { _id, floorName, password, role } = req.body;
 
-//   try {
-//     const isExist = await Auth.findOne({ _id: _id });
+  try {
+    const isExist = await Auth.findOne({ _id: _id });
 
-//     if (isExist) {
-//       return res.json({ status: "failed", message: "Floor Already Exist" });
-//     }
+    if (isExist) {
+      return res.json({ status: "failed", message: "Floor Already Exist" });
+    }
 
-//     const hashPassword = await bcrypt.hash(password, 10);
-//     const auth = new Auth({
-//       _id,
-//       floorName,
-//       password: hashPassword,
-//       role: role,
-//     });
-//     const saveAuth = await auth.save();
+    const hashPassword = await bcrypt.hash(password, 10);
+    const auth = new Auth({
+      _id,
+      floorName,
+      password: hashPassword,
+      role: role,
+    });
+    const saveAuth = await auth.save();
 
-//     return res.json({ status: "success", data: saveAuth });
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ status: "failed", message: "internal server error" });
-//   }
-// });
+    return res.json({ status: "success", data: saveAuth });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "failed", message: "internal server error" });
+  }
+});
 
 router.post("/login", async (req, res) => {
-  // return  res.status(200).json('Welcome, your login app is working well');
   const { floorId, password } = req.body; 
   try {
     const user = await Auth.findOne({ _id: floorId });
