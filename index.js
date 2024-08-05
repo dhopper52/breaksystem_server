@@ -27,18 +27,16 @@ const connectDB = (URI) => {
 const start = async () => {
   try {
     await connectDB(URI);
-   
+    app.listen(port, () => {
+      console.log(`app is runing on ${port}`);
+  });
   } catch (error) {
     console.log(error);
     process.exit(0);
   }
 };
 
- app.listen(port, () => {
-   start();
-      console.log(`app is runing on ${port}`);
-  });
-
-
+ start();
+  
 
 
