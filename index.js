@@ -28,27 +28,12 @@ app.post("/login", async (req, res) => {
   const { floorId, password } = req.body;
   try {
     const user = await Auth.findOne({ _id: floorId });
-    console.log(user);
-    if (!user) {
-      return res.json({ status: "failed", message: "Error Floor not Found" });
-    }
-    const passwordCompare = await bcrypt.compare(password, user?.password);
 
-    if (!passwordCompare) {
-      return res.json({
-        status: "failed",
-        message: "Please login with correct credentials",
-      });
-    }
-    const data = { _id: user?._id, floorName: user?.floorName };
-    const authToken = jwt.sign(data, jwtString);
     return res.json({
       status: "success",
       data: {
-        _id: user?._id,
-        floorName: user?.floorName,
-        authToken: authToken,
-        role: user?.role,
+      user: user,
+  
       },
     });
   } catch (error) {
