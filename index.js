@@ -9,7 +9,7 @@ const URI = process.env.MONGODB_URI_STRING;
 const Auth = require("./models/authModels/authModel");
 const authRouter = require("./routes/authRoute/authRoute");
 const userRoute = require("./routes/userRoute/userRoute");
-// const breakRoute = require("./routes/breakRoute/breakRoute");
+const breakRoute = require("./routes/breakRoute/breakRoute");
 // const ipFilter = require("./middleware/ipAuthenticate/ipAuthenticate");
 
 // app.use(ipFilter);
@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 app.use("/auth", authRouter);
 app.use("/user", userRoute);
-// app.use("/break", breakRoute);
+app.use("/break", breakRoute);
 
 app.get('/home', (req, res) => {
   res.status(200).json('Welcome, your app is working well');
