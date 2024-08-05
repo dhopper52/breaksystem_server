@@ -51,10 +51,7 @@ app.post("/login", async (req, res) => {
 
 const connectDB = async (URI) => {
   try {
-    await mongoose.connect(URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(URI);
     console.log("Connected to DB");
   } catch (error) {
     console.error("Failed to connect to DB:", error);
