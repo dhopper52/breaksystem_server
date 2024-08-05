@@ -22,7 +22,7 @@ app.use("/break", breakRoute);
 app.get('/home', (req, res) => {
   res.status(200).json('Welcome, your app is working well');
 })
-const connectDB = (URI) => {
+const connectDB = async (URI) => {
   try {
     await mongoose.connect(URI, {
       useNewUrlParser: true,
