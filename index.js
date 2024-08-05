@@ -6,7 +6,7 @@ const app = express();
 const PORT = 5000;
 const cors = require("cors");
 const URI = process.env.MONGODB_URI_STRING;
-// const authRouter = require("./routes/authRoute/authRoute");
+const authRouter = require("./routes/authRoute/authRoute");
 // const userRoute = require("./routes/userRoute/userRoute");
 // const breakRoute = require("./routes/breakRoute/breakRoute");
 // const ipFilter = require("./middleware/ipAuthenticate/ipAuthenticate");
@@ -15,7 +15,7 @@ const URI = process.env.MONGODB_URI_STRING;
 app.use(cors());
 app.use(bodyParser.json());
 
-// app.use("/auth", authRouter);
+app.use("/auth", authRouter);
 // app.use("/user", userRoute);
 // app.use("/break", breakRoute);
 
