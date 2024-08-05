@@ -20,8 +20,16 @@ app.use("/user", userRoute);
 app.use("/break", breakRoute);
 
 const connectDB = (URI) => {
-  console.log("Connected to DB");
-  return mongoose.connect(URI);
+  try {
+    await mongoose.connect(URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to DB");
+  } catch (error) {
+    console.error("Failed to connect to DB:", error);
+    process.exit(1); // Exit with failure code
+  }
 };
 
 const start = async () => {
