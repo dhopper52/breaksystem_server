@@ -35,7 +35,7 @@ const jwtString = process.env.JWT_STRING;
 // });
 
 router.get("/login", async (req, res) => {
-    res.status(200).json('Welcome, your login app is working well');
+  return  res.status(200).json('Welcome, your login app is working well');
   // const { floorId, password } = req.body;
   // try {
   //   const user = await Auth.findOne({ _id: floorId });
