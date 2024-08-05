@@ -12,7 +12,7 @@ const URI = process.env.MONGODB_URI_STRING;
 // const ipFilter = require("./middleware/ipAuthenticate/ipAuthenticate");
 
 // app.use(ipFilter);
-app.use(cors());
+app.use(cors()); 
 
 app.use(bodyParser.json());
 
