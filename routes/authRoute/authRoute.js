@@ -34,7 +34,7 @@ const jwtString = process.env.JWT_STRING;
 //   }
 // });
 
-router.post("/login", async (req, res) => {
+router.get("/login", async (req, res) => {
     res.status(200).json('Welcome, your login app is working well');
   // const { floorId, password } = req.body;
   // try {
