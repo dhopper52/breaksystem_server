@@ -19,6 +19,9 @@ app.use("/auth", authRouter);
 app.use("/user", userRoute);
 app.use("/break", breakRoute);
 
+app.get('/home', (req, res) => {
+  res.status(200).json('Welcome, your app is working well');
+})
 const connectDB = (URI) => {
   try {
     await mongoose.connect(URI, {
@@ -34,8 +37,8 @@ const connectDB = (URI) => {
 
 const start = async () => {
   try {
-    // await connectDB(URI);
-    app.listen(port, () => {
+    // await connected(URI);
+    app.listen(PORT, () => {
       console.log(`app is runing on ${port}`);
   });
   } catch (error) {
@@ -45,16 +48,6 @@ const start = async () => {
 };
 
 start();
-
-
-app.get('/home', (req, res) => {
-  res.status(200).json('Welcome, your app is working well');
-})
-
-
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
 
 module.exports = app
   
