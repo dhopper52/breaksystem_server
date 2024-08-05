@@ -68,23 +68,23 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// router.get("/getFloor", async (req, res) => {
-//   try {
-//     const floorList = await Auth.find();
+router.get("/getFloor", async (req, res) => {
+  try {
+    const floorList = await Auth.find();
 
-//     return res.json({
-//       status: "success",
-//       data: { floorList: floorList },
-//     });
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ status: "failed", message: "internal server error" });
-//   }
-// });
+    return res.json({
+      status: "success",
+      data: { floorList: floorList },
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "failed", message: "internal server error" });
+  }
+});
 
-// router.get("/getFr", async (req, res) => {
-//   return res.send({ status: "failed", message: "internal server error" });
-// });
+router.get("/getFr", async (req, res) => {
+  return res.send({ status: "failed", message: "internal server error" });
+});
 
 module.exports = router;
