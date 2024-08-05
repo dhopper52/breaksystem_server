@@ -35,38 +35,38 @@ const jwtString = process.env.JWT_STRING;
 // });
 
 router.get("/login", async (req, res) => {
-  return  res.status(200).json('Welcome, your login app is working well');
-  // const { floorId, password } = req.body; 
-  // try {
-  //   const user = await Auth.findOne({ _id: floorId });
-  //   console.log(user);
-  //   if (!user) {
-  //     return res.json({ status: "failed", message: "Error Floor not Found" });
-  //   }
-  //   const passwordCompare = await bcrypt.compare(password, user?.password);
+  // return  res.status(200).json('Welcome, your login app is working well');
+  const { floorId, password } = req.body; 
+  try {
+    const user = await Auth.findOne({ _id: floorId });
+    console.log(user);
+    if (!user) {
+      return res.json({ status: "failed", message: "Error Floor not Found" });
+    }
+    const passwordCompare = await bcrypt.compare(password, user?.password);
 
-  //   if (!passwordCompare) {
-  //     return res.json({
-  //       status: "failed",
-  //       message: "Please login with correct credentials",
-  //     });
-  //   }
-  //   const data = { _id: user?._id, floorName: user?.floorName };
-  //   const authToken = jwt.sign(data, jwtString);
-  //   return res.json({
-  //     status: "success",
-  //     data: {
-  //       _id: user?._id,
-  //       floorName: user?.floorName,
-  //       authToken: authToken,
-  //       role: user?.role,
-  //     },
-  //   });
-  // } catch (error) {
-  //   return res
-  //     .status(500)
-  //     .json({ status: "failed", message: "internal server error" });
-  // }
+    if (!passwordCompare) {
+      return res.json({
+        status: "failed",
+        message: "Please login with correct credentials",
+      });
+    }
+    const data = { _id: user?._id, floorName: user?.floorName };
+    const authToken = jwt.sign(data, jwtString);
+    return res.json({
+      status: "success",
+      data: {
+        _id: user?._id,
+        floorName: user?.floorName,
+        authToken: authToken,
+        role: user?.role,
+      },
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "failed", message: "internal server error" });
+  }
 });
 
 // router.get("/getFloor", async (req, res) => {
