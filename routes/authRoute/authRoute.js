@@ -1,5 +1,6 @@
 const express = require("express");
-const router = express.Router();
+// const router = express.Router();
+const authRouter = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Auth = require("../../models/authModels/authModel");
@@ -34,7 +35,7 @@ const jwtString = process.env.JWT_STRING;
 //   }
 // });
 
-router.get("/login", async (req, res) => {
+authRouter.get("/login", async (req, res) => {
   return  res.status(200).json('Welcome, your login app is working well');
   // const { floorId, password } = req.body;
   // try {
@@ -88,4 +89,4 @@ router.get("/login", async (req, res) => {
 //   return res.send({ status: "failed", message: "internal server error" });
 // });
 
-module.exports = router;
+module.exports = authRouter;
