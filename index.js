@@ -7,7 +7,7 @@ const PORT = 5000;
 const cors = require("cors");
 const URI = process.env.MONGODB_URI_STRING;
 const Auth = require("./models/authModels/authModel");
-// const authRouter = require("./routes/authRoute/authRoute");
+const authRouter = require("./routes/authRoute/authRoute");
 // const userRoute = require("./routes/userRoute/userRoute");
 // const breakRoute = require("./routes/breakRoute/breakRoute");
 // const ipFilter = require("./middleware/ipAuthenticate/ipAuthenticate");
@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-// app.use("/auth", authRouter);
+app.use("/auth", authRouter);
 // app.use("/user", userRoute);
 // app.use("/break", breakRoute);
 
@@ -25,24 +25,24 @@ app.get('/home', (req, res) => {
   res.status(200).json('Welcome, your app is working well');
 })
 
-app.post("/login", async (req, res) => {
-  const { floorId, password } = req.body;
-  try {
-    const user = await Auth.findOne({ _id: floorId });
+// app.post("/login", async (req, res) => {
+//   const { floorId, password } = req.body;
+//   try {
+//     const user = await Auth.findOne({ _id: floorId });
 
-    return res.json({
-      status: "success",
-      data: {
-      user: user,
+//     return res.json({
+//       status: "success",
+//       data: {
+//       user: user,
   
-      },
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ status: "failed", message: "internal server error" });
-  }
-});
+//       },
+//     });
+//   } catch (error) {
+//     return res
+//       .status(500)
+//       .json({ status: "failed", message: "internal server error" });
+//   }
+// });
 
 
 
