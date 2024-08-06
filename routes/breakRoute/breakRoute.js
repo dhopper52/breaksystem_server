@@ -31,22 +31,22 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   const defaultDate = Date();
   console.log(defaultDate, "......defaultDate..............");
 
-  let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
+  // let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
   // let pstTimeTwo = moment(pstTime).tz("Asia/Karachi");
 
-  console.log(pstTime, "......pstTime..............");
-  // Function to convert UTC to Pakistan Time Zone
-const convertUTCToPakistanTime = (utcDate) => {
+ const convertUTCToPakistanTime = (utcDate) => {
   return moment.utc(utcDate).tz("Asia/Karachi");
 };
 
-// Example usage
-const newdefaultDate = new Date();
-console.log(newdefaultDate.toISOString(), "......defaultDate in UTC..............");
+ const newdefaultDate = new Date();
+// console.log(newdefaultDate.toISOString(), "......defaultDate in UTC..............");
 
 const pakistanTime = convertUTCToPakistanTime(newdefaultDate);
+  let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
-console.log(pakistanTime.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)'), "......pakistanTime formatted..............");
+    console.log(pstTime, "......pstTime..............");
+
+// console.log(pakistanTime.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)'), "......pakistanTime formatted..............");
   // console.log(pstTimeTwo, "......pstTimeTwo..............");
 
   // console.log(req.body, "body  ...................");
