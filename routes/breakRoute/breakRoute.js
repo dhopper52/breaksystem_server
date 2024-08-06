@@ -34,17 +34,24 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   // let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
   // let pstTimeTwo = moment(pstTime).tz("Asia/Karachi");
 
- const convertUTCToPakistanTime = (utcDate) => {
+ const getTodayInPakistanTime = (utcDate) => {
   return moment.utc(utcDate).tz("Asia/Karachi");
 };
+  const getYesterdayInPakistanTime = (utcDate) => {
+  // Convert to Pakistan time and subtract one day
+  return moment.utc(utcDate).tz("Asia/Karachi").subtract(1, 'days');
+};
+
 
  const newdefaultDate = new Date();
 // console.log(newdefaultDate.toISOString(), "......defaultDate in UTC..............");
 
-const pakistanTime = convertUTCToPakistanTime(newdefaultDate);
+const pakistanTime = getTodayInPakistanTime(newdefaultDate);
   let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  let yesterdayDates = getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
     console.log(pstTime, "......pstTime..............");
+    console.log(yesterdayDates, "......yesterdayDates..............");
 
 // console.log(pakistanTime.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)'), "......pakistanTime formatted..............");
   // console.log(pstTimeTwo, "......pstTimeTwo..............");
