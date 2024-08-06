@@ -22,6 +22,7 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
     floorId,
     fine,
     emergencyShortBreak,
+    date,count,
   } = req.body;
   console.log(req.body, "................bpdy body body");
   const shiftStarts = req.body?.user?.shiftStarts;
@@ -65,21 +66,45 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   // console.log("not  24 hours person...........");
 
   try {
-    const breakObj = new Break({
+    // const breakObj = new Break({
+    //   userId,
+    //   name,
+    //   shiftHours,
+    //   usedbreaks,
+    //   floorId,
+    //   emergencyShortBreak,
+    //   breakTime,
+    //   fine,
+    //   date: new Date(pstTime),
+    // });
+  const breakObj = {
       userId,
       name,
       shiftHours,
-      usedbreaks,
       floorId,
       emergencyShortBreak,
-      breakTime,
       fine,
+      count,
       date: new Date(pstTime),
-    });
+    };
+    const isTrulyEmpty = (arr) => {
+      if (arr.length === 0) return true;
+      return arr.every((item) => Array.isArray(item) && item.length === 0);
+    };
 
-    console.log({ breakObj });
+    if (!isTrulyEmpty(usedbreaks)) {
+      breakObj.usedbreaks = usedbreaks;
+    }
+  
+    if (!isTrulyEmpty(breakTime)) {
+      breakObj.breakTime = breakTime;
+    }
 
-    const saveBreak = await breakObj.save();
+ 
+
+    // const saveBreak = await breakObj.save();
+        const saveBreak = await new Break(breakObj).save();
+
     return res.json({ status: "success", data: saveBreak });
   } catch (error) {
     return res.status(500).send("internal server error");
@@ -96,7 +121,7 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
     floorId,
     fine,
     emergencyShortBreak,
-    date,
+    date,count
   } = req.body;
   console.log(date);
   console.log(req.body, "body  ...................");
@@ -110,7 +135,7 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
       breakTime,
       fine,
       emergencyShortBreak,
-      date: date,
+      date: date,count
     });
 
     console.log(breakObj, "breakObj", req.body._id, "req.body._id");
@@ -126,7 +151,7 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
         breakTime,
         fine,
         emergencyShortBreak,
-        date,
+        date,count
       },
       { new: true } // Return the updated document
     );
@@ -161,7 +186,9 @@ router.post(
 
     const is24HoursInclude = checkShiftIncludes24Time(shiftStarts, shiftEnds);
     // let formattedDate = formattedFun(date ? date : defaultDate);
-    let formattedDate = formattedFun(date ? date : pstTime);
+    // let formattedDate = formattedFun(date ? date : pstTime); 
+        let formattedDate =  getCurrentBreakFormate();
+
 
     console.log(formattedDate, ".............................formattedDate");
     if (is24HoursInclude) {
