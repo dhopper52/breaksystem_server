@@ -38,6 +38,20 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   console.log(pstTimeTwo, "......pstTimeTwo..............");
 
   // console.log(req.body, "body  ...................");
+ const newdefaultDate = moment().tz("Asia/Karachi");
+    let newpstTime = newdefaultDate.toISOString();
+
+    console.log(newpstTime, "......newpstTime..............");
+
+    console.log(
+      newdefaultDate.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)"),
+      "......newdefaultDate.format.............."
+    );
+
+    console.log(
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+      "......system time zone.............."
+    );
 
   // const currentTime = getCurrentTimeIn24Hours();
   // console.log(currentTime, "...............currentTime");
