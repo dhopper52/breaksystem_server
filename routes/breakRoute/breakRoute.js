@@ -32,26 +32,38 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   console.log(defaultDate, "......defaultDate..............");
 
   let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
-  let pstTimeTwo = moment(pstTime).tz("Asia/Karachi");
+  // let pstTimeTwo = moment(pstTime).tz("Asia/Karachi");
 
   console.log(pstTime, "......pstTime..............");
-  console.log(pstTimeTwo, "......pstTimeTwo..............");
+  // Function to convert UTC to Pakistan Time Zone
+const convertUTCToPakistanTime = (utcDate) => {
+  return moment.utc(utcDate).tz("Asia/Karachi");
+};
+
+// Example usage
+const newdefaultDate = new Date();
+console.log(newdefaultDate.toISOString(), "......defaultDate in UTC..............");
+
+const pakistanTime = convertUTCToPakistanTime(newdefaultDate);
+console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
+console.log(pakistanTime.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)'), "......pakistanTime formatted..............");
+  // console.log(pstTimeTwo, "......pstTimeTwo..............");
 
   // console.log(req.body, "body  ...................");
- const newdefaultDate = moment().tz("Asia/Karachi");
-    let newpstTime = newdefaultDate.toISOString();
+ // const newdefaultDate = moment().tz("Asia/Karachi");
+ //    let newpstTime = newdefaultDate.toISOString();
 
-    console.log(newpstTime, "......newpstTime..............");
+ //    console.log(newpstTime, "......newpstTime..............");
 
-    console.log(
-      newdefaultDate.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)"),
-      "......newdefaultDate.format.............."
-    );
+ //    console.log(
+ //      newdefaultDate.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)"),
+ //      "......newdefaultDate.format.............."
+ //    );
 
-    console.log(
-      Intl.DateTimeFormat().resolvedOptions().timeZone,
-      "......system time zone.............."
-    );
+ //    console.log(
+ //      Intl.DateTimeFormat().resolvedOptions().timeZone,
+ //      "......system time zone.............."
+ //    );
 
   // const currentTime = getCurrentTimeIn24Hours();
   // console.log(currentTime, "...............currentTime");
