@@ -28,54 +28,27 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   const shiftStarts = req.body?.user?.shiftStarts;
   const shiftEnds = req.body?.user?.shiftEnds;
 
-  const defaultDate = Date();
-  console.log(defaultDate, "......defaultDate..............");
-
-  // let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
-  // let pstTimeTwo = moment(pstTime).tz("Asia/Karachi");
+  // const defaultDate = Date();
+  // console.log(defaultDate, "......defaultDate..............");
+  const newdefaultDate = new Date();
 
  const getTodayInPakistanTime = (utcDate) => {
   return moment.utc(utcDate).tz("Asia/Karachi");
 };
+  
   const getYesterdayInPakistanTime = (utcDate) => {
-  // Convert to Pakistan time and subtract one day
-  return moment.utc(utcDate).tz("Asia/Karachi").subtract(1, 'days');
+   return moment.utc(utcDate).tz("Asia/Karachi").subtract(1, 'days');
 };
 
 
- const newdefaultDate = new Date();
-// console.log(newdefaultDate.toISOString(), "......defaultDate in UTC..............");
-
-const pakistanTime = getTodayInPakistanTime(newdefaultDate);
-  let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-  let yesterdayDates = getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
+ 
+const pstTime = getTodayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  // let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  // let yesterdayDates = getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+// console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
     console.log(pstTime, "......pstTime..............");
-    console.log(yesterdayDates, "......yesterdayDates..............");
+    // console.log(yesterdayDates, "......yesterdayDates..............");
 
-// console.log(pakistanTime.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)'), "......pakistanTime formatted..............");
-  // console.log(pstTimeTwo, "......pstTimeTwo..............");
-
-  // console.log(req.body, "body  ...................");
- // const newdefaultDate = moment().tz("Asia/Karachi");
- //    let newpstTime = newdefaultDate.toISOString();
-
- //    console.log(newpstTime, "......newpstTime..............");
-
- //    console.log(
- //      newdefaultDate.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)"),
- //      "......newdefaultDate.format.............."
- //    );
-
- //    console.log(
- //      Intl.DateTimeFormat().resolvedOptions().timeZone,
- //      "......system time zone.............."
- //    );
-
-  // const currentTime = getCurrentTimeIn24Hours();
-  // console.log(currentTime, "...............currentTime");
-  // console.log(shiftStarts, ".......................shiftStarts");
-  // console.log(shiftEnds, ".......................shiftEnds");
 
   const is24HoursInclude = checkShiftIncludes24Time(shiftStarts, shiftEnds);
   console.log(is24HoursInclude, "is24HoursInclude");
@@ -85,32 +58,18 @@ console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTi
     const isCurrentTimeBeforeMidnight = isCurrentTimeInShift(shiftStarts);
 
     if (!isCurrentTimeBeforeMidnight) {
-      const yesterdayDat = yesterdayDate();
-      console.log(
-        yesterdayDat,
-        "...............................yesterdayDatyesterdayDat"
-      );
-      pstTime = moment.utc(yesterdayDat).tz("Asia/Karachi").toISOString(); // check the let type
+   
+      pstTime =   getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
       console.log(pstTime, ".............yesterdayDate");
     }
     console.log(isCurrentTimeBeforeMidnight, "isCurrentTimeBeforeMidnight");
   }
 
-  // console.log("not  24 hours person...........");
+ 
 
   try {
-    // const breakObj = new Break({
-    //   userId,
-    //   name,
-    //   shiftHours,
-    //   usedbreaks,
-    //   floorId,
-    //   emergencyShortBreak,
-    //   breakTime,
-    //   fine,
-    //   date: new Date(pstTime),
-    // });
+ 
   const breakObj = {
       userId,
       name,
