@@ -29,6 +29,7 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   const shiftEnds = req.body?.user?.shiftEnds;
 
   const defaultDate = Date();
+  console.log(defaultDate, "......defaultDate..............");
 
   let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
   let pstTimeTwo = moment(pstTime).tz("Asia/Karachi");
