@@ -3,21 +3,21 @@ const mongoose = require("mongoose");
 const breakTimeSchema = new mongoose.Schema({
   startTime: {
     type: String,
-    required: true,
+    required: false,
   },
   endTime: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 const usedBreaksSchema = new mongoose.Schema({
   breakKey: {
     type: Number,
-    required: true,
+    required: false,
   },
   breakValue: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 
@@ -40,7 +40,7 @@ const breakSchema = new mongoose.Schema({
   },
   usedbreaks: {
     type: [usedBreaksSchema],
-    required: true,
+    required: false,
   },
   emergencyShortBreak: {
     type: Number,
@@ -61,7 +61,7 @@ const breakSchema = new mongoose.Schema({
   },
   breakTime: {
     type: [breakTimeSchema],
-    required: true,
+    required: false,
   },
 });
 
