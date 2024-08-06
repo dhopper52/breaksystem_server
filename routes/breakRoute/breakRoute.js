@@ -28,8 +28,8 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   const shiftStarts = req.body?.user?.shiftStarts;
   const shiftEnds = req.body?.user?.shiftEnds;
 
-  // const defaultDate = Date();
-  // console.log(defaultDate, "......defaultDate..............");
+  const defaultDate = Date();
+  console.log(defaultDate, "......defaultDate..............");
   const newdefaultDate = new Date();
 
  const getTodayInPakistanTime = (utcDate) => {
@@ -42,7 +42,7 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
 
 
  
-const pstTime = getTodayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+let pstTime = getTodayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // let yesterdayDates = getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 // console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
