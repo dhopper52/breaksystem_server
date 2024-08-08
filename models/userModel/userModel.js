@@ -8,14 +8,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  phoneNo: {
-    type: String,
-    required: Number,
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
+  // phoneNo: {
+  //   type: String,
+  //   required: Number,
+  // },
+  // gender: {
+  //   type: String,
+  //   required: true,
+  // },
   shiftHours: {
     type: String,
     required: true,
