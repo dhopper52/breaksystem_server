@@ -11,8 +11,8 @@ router.post("/createUser", authenticateUser, async (req, res) => {
   const {
     _id,
     name,
-    phoneNo,
-    gender,
+    // phoneNo,
+    // gender,
     shiftHours,
     floorId,
     shiftStarts,
@@ -29,8 +29,8 @@ router.post("/createUser", authenticateUser, async (req, res) => {
           _id,
           {
             name,
-            phoneNo,
-            gender,
+            // phoneNo,
+            // gender,
             shiftHours,
             floorId,
             shiftStarts,
@@ -47,8 +47,8 @@ router.post("/createUser", authenticateUser, async (req, res) => {
       const user = new User({
         _id,
         name,
-        phoneNo,
-        gender,
+        // phoneNo,
+        // gender,
         shiftHours,
         floorId,
         shiftStarts,
