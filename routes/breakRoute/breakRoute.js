@@ -262,9 +262,18 @@ router.post(
     let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
     let newTime = new Date();
     console.log(pstTime);
+
+     const getTodayInPakistanTime = (utcDate) => {
+     return moment.utc(utcDate).tz("Asia/Karachi");
+     };
+    
+    const newPstTime =   getTodayInPakistanTime(newTime).format('YYYY-MM-DD');
+    console.log(newPstTime, "newPstTime newPstTime newPstTime");
+
+    
     const formattedDate = formattedFun(date ? date : newTime);
     console.log(newTime, "newTime");
-    console.log(newTime, "newTime");
+    console.log(date, "date");
     console.log(formattedDate, "..........formattedDate");
     try {
       let query = {
