@@ -315,7 +315,7 @@ router.post(
      return moment.utc(utcDate).tz("Asia/Karachi");
      };
      let pstTime = getTodayInPakistanTime(defaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-           let startDatestartDate = getTodayInPakistanTime(startDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+     let startDatestartDate = getTodayInPakistanTime(startDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
      let endDateendDate = getTodayInPakistanTime(endDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
      console.log(pstTime , " pstTimepstTimepstTimepstTime bodyyyyyyyyyyy");
@@ -358,8 +358,13 @@ router.post(
       };
 
       if (startDate && endDate) {
-        const start = formatDateString(new Date(startDate));
-        const end = formatDateString(new Date(endDate));
+        // const start = formatDateString(new Date(startDate));
+        // const end = formatDateString(new Date(endDate));
+
+        const start =  getTodayInPakistanTime(startDate).format('YYYY-MM-DD');
+        const end =  getTodayInPakistanTime(endDate).format('YYYY-MM-DD');
+
+        
         console.log({ start } , "iff");
         console.log({ end },"iffff");
         query = {
@@ -381,8 +386,13 @@ router.post(
           },
         };
       } else {
-        const start = formatDateString(new Date(thirtyDaysAgo));
-        const end = formatDateString(new Date());
+        // const start = formatDateString(new Date(thirtyDaysAgo));
+        // const end = formatDateString(new Date());
+
+   const start =  getTodayInPakistanTime(new Date(thirtyDaysAgo)).format('YYYY-MM-DD');
+   const end = getTodayInPakistanTime(new Date()).format('YYYY-MM-DD');
+
+          
   console.log({ start });
         console.log({ end });
         query = {
