@@ -271,8 +271,8 @@ router.post(
     console.log(newPstTime, "newPstTime newPstTime newPstTime");
 
     
-    // const formattedDate = formattedFun(date ? date : newTime);
-    // console.log(newTime, "newTime");
+    const formattedDate = formattedFun(date ? date : newTime);
+  console.log(formattedDate, "formattedDate");
     console.log(date, "date");
     // console.log(formattedDate, "..........formattedDate");
     try {
