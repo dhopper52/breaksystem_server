@@ -315,11 +315,13 @@ router.post(
      return moment.utc(utcDate).tz("Asia/Karachi");
      };
      let pstTime = getTodayInPakistanTime(defaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-     let startDatestartDate = getTodayInPakistanTime(startDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+     let startDatestartDate = moment.utc(startDate).tz("Asia/Karachi").format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+     let startDatestart = moment.utc(startDate).tz("Asia/Karachi").toISOString();
      let endDateendDate = getTodayInPakistanTime(endDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
      console.log(pstTime , " pstTimepstTimepstTimepstTime bodyyyyyyyyyyy");
      console.log(startDatestartDate , " startDatestartDate bodyyyyyyyyyyy");
+     console.log(startDatestart , " startDatestart bodyyyyyyyyyyy");
      console.log(endDateendDate , " endDateendDate bodyyyyyyyyyyy");
 
 
