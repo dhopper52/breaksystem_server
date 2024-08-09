@@ -259,28 +259,28 @@ router.post(
     const defaultDate = Date();
 
     console.log(req.body, "bodyyyyyyybbbbbbbbbbbbbb");
-    let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
+    // let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
     let newTime = new Date();
-    console.log(pstTime);
+    // console.log(pstTime);
 
      const getTodayInPakistanTime = (utcDate) => {
      return moment.utc(utcDate).tz("Asia/Karachi");
      };
     
-    const newPstTime =   getTodayInPakistanTime(newTime).format('YYYY-MM-DD');
+    const newPstTime =   getTodayInPakistanTime(date ? date : newTime).format('YYYY-MM-DD');
     console.log(newPstTime, "newPstTime newPstTime newPstTime");
 
     
-    const formattedDate = formattedFun(date ? date : newTime);
-    console.log(newTime, "newTime");
+    // const formattedDate = formattedFun(date ? date : newTime);
+    // console.log(newTime, "newTime");
     console.log(date, "date");
-    console.log(formattedDate, "..........formattedDate");
+    // console.log(formattedDate, "..........formattedDate");
     try {
       let query = {
         $expr: {
           $eq: [
             { $dateToString: { format: "%d/%m/%Y", date: "$date" } },
-            formattedDate,
+            newPstTime,
           ],
         },
       };
