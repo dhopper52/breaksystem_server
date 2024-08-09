@@ -263,12 +263,12 @@ router.post(
     let newTime = new Date();
     // console.log(pstTime);
 
-     const getTodayInPakistanTime = (utcDate) => {
-     return moment.utc(utcDate).tz("Asia/Karachi");
-     };
+     // const getTodayInPakistanTime = (utcDate) => {
+     // return moment.utc(utcDate).tz("Asia/Karachi");
+     // };
     
-    const newPstTime =   getTodayInPakistanTime(date ? date : newTime).format('YYYY-MM-DD');
-    console.log(newPstTime, "newPstTime newPstTime newPstTime");
+    // const newPstTime =   getTodayInPakistanTime(date ? date : newTime).format('YYYY-MM-DD');
+    // console.log(newPstTime, "newPstTime newPstTime newPstTime");
 
     
     const formattedDate = formattedFun(date ? date : newTime);
@@ -280,7 +280,7 @@ router.post(
         $expr: {
           $eq: [
             { $dateToString: { format: "%d/%m/%Y", date: "$date" } },
-            newPstTime,
+            formattedDate,
           ],
         },
       };
@@ -317,8 +317,6 @@ router.post(
       const { floorId, _id, reportType, startDate, endDate } = req.body;
       console.log(req.body, "bodyyyyyyyyyyy");
  const defaultDate = new Date();
-
- 
 
      const getTodayInPakistanTime = (utcDate) => {
      return moment.utc(utcDate).tz("Asia/Karachi");
