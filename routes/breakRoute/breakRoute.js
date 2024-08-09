@@ -307,6 +307,10 @@ router.post(
     try {
       const { floorId, _id, reportType, startDate, endDate } = req.body;
       console.log(req.body, "bodyyyyyyyyyyy");
+ const defaultDate = Date();
+
+      let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
+            console.log(pstTime , " pstTimepstTimepstTimepstTime bodyyyyyyyyyyy");
 
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
