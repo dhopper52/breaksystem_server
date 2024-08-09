@@ -339,7 +339,8 @@ router.post(
       if (startDate && endDate) {
         const start = formatDateString(new Date(startDate));
         const end = formatDateString(new Date(endDate));
-
+        console.log({ start } , "iff");
+        console.log({ end },"iffff");
         query = {
           $expr: {
             $and: [
@@ -361,7 +362,8 @@ router.post(
       } else {
         const start = formatDateString(new Date(thirtyDaysAgo));
         const end = formatDateString(new Date());
-
+  console.log({ start });
+        console.log({ end });
         query = {
           $expr: {
             $and: [
