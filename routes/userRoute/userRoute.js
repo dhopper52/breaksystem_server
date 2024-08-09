@@ -145,6 +145,7 @@ router.post(
     try {
       let query = {};
       if (floorId) query.floorId = floorId;
+      if (_id) query._id = _id;
       const userList = await User.find(query);
       if (userList.length === 0) {
         return res.json({
