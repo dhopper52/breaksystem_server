@@ -162,4 +162,28 @@ router.post(
     }
   }
 );
+
+router.delete(
+  "/deleteUser",
+  //  authenticateUser,
+  async (req, res) => {
+    const { floorId, _id } = req.body;
+    console.log(req.body, "........................body");
+    try {
+      const isExist = await User.findById(_id);
+      console.log({ isExist });
+      if (!isExist) {
+        return res.json({ status: "failed", message: "User doesn't exist" });
+      }
+      await User.findByIdAndDelete(_id);
+      return res.json({ status: "success" });
+    } catch (error) {
+      console.error(error);
+
+      return res
+        .status(500)
+        .json({ status: "failed", message: "internal server error" });
+    }
+  }
+);
 module.exports = router;

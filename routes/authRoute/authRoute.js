@@ -35,7 +35,7 @@ router.post("/signup", authenticateRole, async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { floorId, password } = req.body; 
+  const { floorId, password } = req.body;
   try {
     const user = await Auth.findOne({ _id: floorId });
     console.log(user);
@@ -85,6 +85,37 @@ router.get("/getFloor", async (req, res) => {
 
 router.get("/getFr", async (req, res) => {
   return res.send({ status: "failed", message: "internal server error" });
+});
+
+router.put("/updateFloor", async (req, res) => {
+  const { _id, floorName, password, role } = req.body;
+console.log(req.body)
+  try {
+    const isExist = await Auth.findOne({ _id: _id });
+    console.log({ isExist });
+    if (!isExist) {
+      return res.json({ status: "failed", message: "Floor Doesn't Exist" });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const saveAuth = await Auth.findByIdAndUpdate(
+      _id,
+      {
+        _id,
+        floorName,
+        password: hashPassword,
+        role: role,
+      },
+      { new: true }
+    );
+ 
+    return res.json({ status: "success", data: saveAuth });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "failed", message: "internal server error" });
+  }
 });
 
 module.exports = router;
