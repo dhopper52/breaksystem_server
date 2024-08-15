@@ -119,7 +119,7 @@ router.post(
 
     try {
       const userList = await User.find(query);
-      console.log(userList, "userrrrrrrrrrrrrrrr");
+      // console.log(userList, "userrrrrrrrrrrrrrrr");
       if (userList.length === 0) {
         return res.json({
           status: "failed",
