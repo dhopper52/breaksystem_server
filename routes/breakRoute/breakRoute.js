@@ -22,7 +22,8 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
     floorId,
     fine,
     emergencyShortBreak,
-    date,count,
+    date,
+    count,
   } = req.body;
   console.log(req.body, "................bpdy body body");
   const shiftStarts = req.body?.user?.shiftStarts;
@@ -32,23 +33,22 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   console.log(defaultDate, "......defaultDate..............");
   const newdefaultDate = new Date();
 
- const getTodayInPakistanTime = (utcDate) => {
-  return moment.utc(utcDate).tz("Asia/Karachi");
-};
-  
+  const getTodayInPakistanTime = (utcDate) => {
+    return moment.utc(utcDate).tz("Asia/Karachi");
+  };
+
   const getYesterdayInPakistanTime = (utcDate) => {
-   return moment.utc(utcDate).tz("Asia/Karachi").subtract(1, 'days');
-};
+    return moment.utc(utcDate).tz("Asia/Karachi").subtract(1, "days");
+  };
 
-
- 
-let pstTime = getTodayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  let pstTime = getTodayInPakistanTime(newdefaultDate).format(
+    "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
+  );
   // let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // let yesterdayDates = getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-// console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
-    console.log(pstTime, "......pstTime..............");
-    // console.log(yesterdayDates, "......yesterdayDates..............");
-
+  // console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
+  console.log(pstTime, "......pstTime..............");
+  // console.log(yesterdayDates, "......yesterdayDates..............");
 
   const is24HoursInclude = checkShiftIncludes24Time(shiftStarts, shiftEnds);
   console.log(is24HoursInclude, "is24HoursInclude");
@@ -58,19 +58,17 @@ let pstTime = getTodayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss
     const isCurrentTimeBeforeMidnight = isCurrentTimeInShift(shiftStarts);
 
     if (!isCurrentTimeBeforeMidnight) {
-   
-      pstTime =   getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+      pstTime = getYesterdayInPakistanTime(newdefaultDate).format(
+        "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
+      );
 
       console.log(pstTime, ".............yesterdayDate");
     }
     console.log(isCurrentTimeBeforeMidnight, "isCurrentTimeBeforeMidnight");
   }
 
- 
-
   try {
- 
-  const breakObj = {
+    const breakObj = {
       userId,
       name,
       shiftHours,
@@ -88,15 +86,13 @@ let pstTime = getTodayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss
     if (!isTrulyEmpty(usedbreaks)) {
       breakObj.usedbreaks = usedbreaks;
     }
-  
+
     if (!isTrulyEmpty(breakTime)) {
       breakObj.breakTime = breakTime;
     }
 
- 
-
     // const saveBreak = await breakObj.save();
-        const saveBreak = await new Break(breakObj).save();
+    const saveBreak = await new Break(breakObj).save();
 
     return res.json({ status: "success", data: saveBreak });
   } catch (error) {
@@ -114,7 +110,8 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
     floorId,
     fine,
     emergencyShortBreak,
-    date,count
+    date,
+    count,
   } = req.body;
   console.log(date);
   console.log(req.body, "body  ...................");
@@ -128,7 +125,8 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
       breakTime,
       fine,
       emergencyShortBreak,
-      date: date,count
+      date: date,
+      count,
     });
 
     console.log(breakObj, "breakObj", req.body._id, "req.body._id");
@@ -144,7 +142,8 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
         breakTime,
         fine,
         emergencyShortBreak,
-        date,count
+        date,
+        count,
       },
       { new: true } // Return the updated document
     );
@@ -179,9 +178,8 @@ router.post(
 
     const is24HoursInclude = checkShiftIncludes24Time(shiftStarts, shiftEnds);
     // let formattedDate = formattedFun(date ? date : defaultDate);
-    // let formattedDate = formattedFun(date ? date : pstTime); 
-        let formattedDate =  getCurrentBreakFormate();
-
+    // let formattedDate = formattedFun(date ? date : pstTime);
+    let formattedDate = getCurrentBreakFormate();
 
     console.log(formattedDate, ".............................formattedDate");
     if (is24HoursInclude) {
@@ -261,18 +259,8 @@ router.post(
     console.log(req.body, "bodyyyyyyybbbbbbbbbbbbbb");
     // let pstTime = moment.utc(defaultDate).tz("Asia/Karachi").toISOString();
     let newTime = new Date();
-    // console.log(pstTime);
-
-     // const getTodayInPakistanTime = (utcDate) => {
-     // return moment.utc(utcDate).tz("Asia/Karachi");
-     // };
-    
-    // const newPstTime =   getTodayInPakistanTime(date ? date : newTime).format('YYYY-MM-DD');
-    // console.log(newPstTime, "newPstTime newPstTime newPstTime");
-
-    
     const formattedDate = formattedFun(date ? date : newTime);
-  console.log(formattedDate, "formattedDate");
+    console.log(formattedDate, "formattedDate");
     console.log(date, "date");
     // console.log(formattedDate, "..........formattedDate");
     try {
@@ -288,8 +276,13 @@ router.post(
       if (_id) query.userId = Number(_id);
 
       console.log(query, "queryyyyyyy");
-
+      const allowedBreakTimes = {
+        "12 Hours": 70,
+        "10 Hours": 60,
+        "8 Hours": 50,
+      };
       const breakList = await Break.find(query).lean();
+      console.log({ breakList });
       for (let items of breakList) {
         totalBreakTime = 0;
 
@@ -297,6 +290,15 @@ router.post(
           totalBreakTime += item.breakValue;
         }
         items.totalBreakTime = totalBreakTime;
+
+        const allowedBreakTime = allowedBreakTimes[items.shiftHours];
+
+        if (
+          allowedBreakTime !== undefined &&
+          items.totalBreakTime > allowedBreakTime
+        ) {
+          items.fine = (items.fine || 0) + 500;
+        }
       }
       return res.json({
         status: "success",
@@ -316,66 +318,44 @@ router.post(
     try {
       const { floorId, _id, reportType, startDate, endDate } = req.body;
       console.log(req.body, "bodyyyyyyyyyyy");
- const defaultDate = new Date();
+      const defaultDate = new Date();
 
-     const getTodayInPakistanTime = (utcDate) => {
-     return moment.utc(utcDate).tz("Asia/Karachi");
-     };
-     let pstTime = getTodayInPakistanTime(defaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-     let startDatestartDate = moment.utc(startDate).tz("Asia/Karachi").format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-     let startDatestart = moment.utc(startDate).tz("Asia/Karachi").toISOString();
-     let endDateendDate = getTodayInPakistanTime(endDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+      const getTodayInPakistanTime = (utcDate) => {
+        return moment.utc(utcDate).tz("Asia/Karachi");
+      };
+      let pstTime = getTodayInPakistanTime(defaultDate).format(
+        "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
+      );
+      let startDatestartDate = moment
+        .utc(startDate)
+        .tz("Asia/Karachi")
+        .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+      let startDatestart = moment
+        .utc(startDate)
+        .tz("Asia/Karachi")
+        .toISOString();
+      let endDateendDate = getTodayInPakistanTime(endDate).format(
+        "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
+      );
 
-     console.log(pstTime , " pstTimepstTimepstTimepstTime bodyyyyyyyyyyy");
-     console.log(startDatestartDate , " startDatestartDate bodyyyyyyyyyyy");
-     console.log(startDatestart , " startDatestart bodyyyyyyyyyyy");
-     console.log(endDateendDate , " endDateendDate bodyyyyyyyyyyy");
+      console.log(pstTime, " pstTimepstTimepstTimepstTime bodyyyyyyyyyyy");
+      console.log(startDatestartDate, " startDatestartDate bodyyyyyyyyyyy");
+      console.log(startDatestart, " startDatestart bodyyyyyyyyyyy");
+      console.log(endDateendDate, " endDateendDate bodyyyyyyyyyyy");
 
-
-      
-
-
-
-
-      
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-      // let query = {};
-      // if (floorId !== 0) query.floorId = Number(floorId);
-      // if (_id && reportType === "singleUser") query.userId = Number(_id);
-      // if (startDate && endDate) {
-      //   const start = new Date(startDate);
-      //   const end = new Date(endDate);
-
-      //   query.date = {
-      //     $gte: start,
-      //     $lte: end,
-      //   };
-      // } else {
-      //   const start = new Date(thirtyDaysAgo);
-      //   const end = new Date();
-
-      //   query.date = {
-      //     $gte: start,
-      //     $lte: end,
-      //   };
-      // }
 
       const formatDateString = (date) => {
         return moment(date).format("YYYY-MM-DD");
       };
 
       if (startDate && endDate) {
-        // const start = formatDateString(new Date(startDate));
-        // const end = formatDateString(new Date(endDate));
+        const start = getTodayInPakistanTime(startDate).format("YYYY-MM-DD");
+        const end = getTodayInPakistanTime(endDate).format("YYYY-MM-DD");
 
-        const start =  getTodayInPakistanTime(startDate).format('YYYY-MM-DD');
-        const end =  getTodayInPakistanTime(endDate).format('YYYY-MM-DD');
-
-        
-        console.log({ start } , "iff");
-        console.log({ end },"iffff");
+        console.log({ start }, "iff");
+        console.log({ end }, "iffff");
         query = {
           $expr: {
             $and: [
@@ -398,11 +378,12 @@ router.post(
         // const start = formatDateString(new Date(thirtyDaysAgo));
         // const end = formatDateString(new Date());
 
-   const start =  getTodayInPakistanTime(new Date(thirtyDaysAgo)).format('YYYY-MM-DD');
-   const end = getTodayInPakistanTime(new Date()).format('YYYY-MM-DD');
+        const start = getTodayInPakistanTime(new Date(thirtyDaysAgo)).format(
+          "YYYY-MM-DD"
+        );
+        const end = getTodayInPakistanTime(new Date()).format("YYYY-MM-DD");
 
-          
-  console.log({ start });
+        console.log({ start });
         console.log({ end });
         query = {
           $expr: {
@@ -430,6 +411,11 @@ router.post(
       if (_id && reportType === "singleUser") {
         query.userId = Number(_id);
       }
+      const allowedBreakTimes = {
+        "12 Hours": 70,
+        "10 Hours": 60,
+        "8 Hours": 50,
+      };
 
       if (reportType === "singleUser") {
         console.log(query, "queryyyyyyyyyyyyyyy");
@@ -442,7 +428,17 @@ router.post(
             totalBreakTime += item.breakValue;
           }
           items.totalBreakTime = totalBreakTime;
+
+          const allowedBreakTime = allowedBreakTimes[items.shiftHours];
+
+          if (
+            allowedBreakTime !== undefined &&
+            items.totalBreakTime > allowedBreakTime
+          ) {
+            items.fine = (items.fine || 0) + 500;
+          }
         }
+
         return res.json({
           status: "success",
           data: breakList,
@@ -451,14 +447,46 @@ router.post(
       }
 
       const breakList = await Break.find(query).lean();
-      console.log(query, "......................query");
+      console.log(breakList, "......................breakList");
       const userBreaksMap = {};
 
-      breakList.forEach((record) => {
-        const { userId, usedbreaks, fine, emergencyShortBreak } = record;
-        // userBreaksMap[userId].toalFine = 0;
+      // breakList.forEach((record) => {
+      //   const { userId, usedbreaks, fine, emergencyShortBreak, shiftHours } =
+      //     record;
+      //   console.log(emergencyShortBreak, "emergencyShortBreak");
+      //    if (!userBreaksMap[userId]) {
+      //     userBreaksMap[userId] = {
+      //       userId,
+      //       name: record.name,
+      //       shiftHours: record.shiftHours,
+      //       usedBreakTime: 0,
+      //       totalBreakTime: 0,
+      //       floorId: record.floorId,
+      //       totalFine: 0,
+      //       emergencyShortBreak: 0,
+      //     };
+      //   }
+      //   usedbreaks.forEach((breakRecord) => {
+      //     userBreaksMap[userId].usedBreakTime += breakRecord.breakValue;
+      //     userBreaksMap[userId].totalBreakTime +=
+      //       breakRecord.breakKey === 21 ? 20 : breakRecord.breakKey;
+      //   });
+      //   userBreaksMap[userId].emergencyShortBreak += emergencyShortBreak;
+      //   userBreaksMap[userId].totalFine += fine;
 
-        console.log(emergencyShortBreak, "emergencyShortBreak");
+      //   const allowedBreakTime = allowedBreakTimes[shiftHours];
+
+      //   if (
+      //     allowedBreakTime !== undefined &&
+      //     userBreaksMap[userId].totalBreakTime > allowedBreakTime
+      //   ) {
+      //     userBreaksMap[userId].totalFine += 500;
+      //   }
+      // });
+      breakList.forEach((record) => {
+        const { userId, usedbreaks, fine, emergencyShortBreak, shiftHours } =
+          record;
+
         // Initialize the user record if it doesn't exist in the map
         if (!userBreaksMap[userId]) {
           userBreaksMap[userId] = {
@@ -472,15 +500,50 @@ router.post(
             emergencyShortBreak: 0,
           };
         }
+
+        // Aggregate break times
         usedbreaks.forEach((breakRecord) => {
           userBreaksMap[userId].usedBreakTime += breakRecord.breakValue;
           userBreaksMap[userId].totalBreakTime +=
             breakRecord.breakKey === 21 ? 20 : breakRecord.breakKey;
         });
+
+        // Add emergency short break and fines
         userBreaksMap[userId].emergencyShortBreak += emergencyShortBreak;
         userBreaksMap[userId].totalFine += fine;
+
+        // const allowedBreakTime = allowedBreakTimes[shiftHours];
+
+        // // Apply additional fine if total break time exceeds the allowed break time
+        // if (
+        //   allowedBreakTime !== undefined &&
+        //   userBreaksMap[userId].totalBreakTime > allowedBreakTime
+        // ) {
+        //   userBreaksMap[userId].totalFine += 500 + fine;
+        //   console.log("........................................");
+        //   console.log(userId, "if ", userBreaksMap[userId].totalFine);
+        //   console.log(
+        //     userBreaksMap[userId].totalBreakTime,
+        //     "if detail",
+        //     allowedBreakTime
+        //   );
+        //   console.log("........................................");
+        // } else {
+        //   userBreaksMap[userId].totalFine += fine;
+        //   console.log("........................................");
+        //   console.log(userId, "else userID", userBreaksMap[userId].totalFine);
+        //   console.log(
+        //     userBreaksMap[userId].totalBreakTime,
+        //     "if detail",
+        //     allowedBreakTime
+        //   );
+        //   console.log("........................................");
+        // }
       });
+
+      console.log({ userBreaksMap });
       const newBreakList = Object.values(userBreaksMap);
+      console.log({ newBreakList });
 
       return res.json({
         status: "success",

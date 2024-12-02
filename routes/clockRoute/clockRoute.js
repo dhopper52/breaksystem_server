@@ -80,7 +80,7 @@ router.post("/startClock", async (req, res) => {
     }
 
     console.log({ breakLength });
-    console.log({allowedLength});
+    console.log({ allowedLength });
 
     const actBreak = await activeBreakObj.save();
     console.log({ actBreak });
@@ -97,6 +97,18 @@ router.post("/getClock", async (req, res) => {
   const { _id } = req.body;
   try {
     const actBreaks = await ActiveBreak.find({ floorId: _id });
+    console.log({ actBreaks });
+    return res.json({ status: "success", data: actBreaks });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "failed", message: "internal server error" });
+  }
+});
+
+router.post("/getAdminClock", async (req, res) => {
+  try {
+    const actBreaks = await ActiveBreak.find();
     console.log({ actBreaks });
     return res.json({ status: "success", data: actBreaks });
   } catch (error) {

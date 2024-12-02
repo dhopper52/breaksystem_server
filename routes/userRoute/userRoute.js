@@ -65,76 +65,54 @@ router.post("/createUser", authenticateUser, async (req, res) => {
       .json({ status: "failed", message: "Internal server error" });
   }
 });
-// router.post("/createUser", authenticateUser, async (req, res) => {
-//   const {
-//     _id,
-//     name,
-//     phoneNo,
-//     gender,
-//     shiftHours,
-//     floorId,
-//     shiftStarts,
-//     shiftEnds,
-//     actionFor,
-//   } = req.body;
-//   console.log(req.body);
-//   // try {
-//   const isExist = await User.findOne({ _id: _id });
-//   if (isExist) {
-//     return res.json({ status: "failed", message: "User Already Exist" });
-//   }
-//   const user = new User({
-//     _id,
-//     gender,
-//     name,
-//     phoneNo,
-//     shiftHours,
-//     floorId,
-//     shiftStarts,
-//     shiftEnds,
-//   });
-//   console.log(user);
-//   if (actionFor === "update") {
-//     console.log("update.................");
-//     const saveUser = await User.findByIdAndUpdate({ _id: _id, user });
-//     return res.json({ status: "success", data: saveUser });
-//   }
-//   console.log("create.................");
-
-//   const saveUser = await user.save();
-//   return res.json({ status: "success", data: saveUser });
-//   // } catch (error) {
-//   //   return res.json({ status: "failed", message: "internal server error" });
-//   // }
-// });
 
 router.post(
   "/getUser",
-  //  authenticateUser,
   async (req, res) => {
-    const { floorId, _id } = req.body;
+    console.log(req.body, "getUser");
+    const { floorId, _id, name } = req.body;
     let query = {};
+
+    // Add floorId to query if provided
     if (floorId) query.floorId = floorId;
-    if (_id) query._id = Number(_id);
+
+    // Add _id to query if provided and numeric
+    if (_id && !isNaN(Number(_id))) query._id = Number(_id);
+
+    // Add name to query if provided and valid for RegExp
+    if (name) {
+      try {   
+        query.name = { $regex: new RegExp(name, "i") }; // Case-insensitive name search
+      } catch (error) {
+        console.error("Invalid regular expression for name:", name);
+        return res.status(400).json({
+          status: "failed",
+          message: "Invalid search query for name.",
+        });
+      }
+    }
 
     try {
       const userList = await User.find(query);
-      // console.log(userList, "userrrrrrrrrrrrrrrr");
+
       if (userList.length === 0) {
         return res.json({
           status: "failed",
-          message: "No User Exist to this floor Id",
+          message: "No User Exists matching the criteria.",
         });
       }
 
       return res.json({ status: "success", data: userList });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ status: "failed", message: "internal server error" });
+      console.error("Error fetching user list:", error);
+      return res.status(500).json({
+        status: "failed",
+        message: "Internal Server Error.",
+      });
     }
   }
 );
+
 
 router.post(
   "/getUsers",
