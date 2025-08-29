@@ -11,6 +11,7 @@ const yesterdayDate = require("../../shared/utils/yesterdayDate");
 const moment = require("moment-timezone");
 const newGetYesterdayDate = require("../../shared/utils/newYesterdayDate");
 const getCurrentBreakFormate = require("../../shared/utils/getCurrentBreakFormate");
+const ActiveBreak = require("../../models/activeBreakModal/activeBreakModal");
 
 router.post("/createBreak", authenticateUser, async (req, res) => {
   const {
@@ -25,12 +26,12 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
     date,
     count,
   } = req.body;
-  console.log(req.body, "................bpdy body body");
+  console.log(req.body, "................createBreak............body");
   const shiftStarts = req.body?.user?.shiftStarts;
   const shiftEnds = req.body?.user?.shiftEnds;
 
   const defaultDate = Date();
-  console.log(defaultDate, "......defaultDate..............");
+  // console.log(defaultDate, "......defaultDate..............");
   const newdefaultDate = new Date();
 
   const getTodayInPakistanTime = (utcDate) => {
@@ -47,14 +48,14 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
   // let pstTime = pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // let yesterdayDates = getYesterdayInPakistanTime(newdefaultDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.log(pakistanTime.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'), "......pakistanTime in ISO..............");
-  console.log(pstTime, "......pstTime..............");
+  // console.log(pstTime, "......pstTime..............");
   // console.log(yesterdayDates, "......yesterdayDates..............");
 
   const is24HoursInclude = checkShiftIncludes24Time(shiftStarts, shiftEnds);
-  console.log(is24HoursInclude, "is24HoursInclude");
+  // console.log(is24HoursInclude, "is24HoursInclude");
 
   if (is24HoursInclude) {
-    console.log("24 hours person...........");
+    // console.log("24 hours person...........");
     const isCurrentTimeBeforeMidnight = isCurrentTimeInShift(shiftStarts);
 
     if (!isCurrentTimeBeforeMidnight) {
@@ -62,9 +63,9 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
         "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
       );
 
-      console.log(pstTime, ".............yesterdayDate");
+      // console.log(pstTime, ".............yesterdayDate");
     }
-    console.log(isCurrentTimeBeforeMidnight, "isCurrentTimeBeforeMidnight");
+    // console.log(isCurrentTimeBeforeMidnight, "isCurrentTimeBeforeMidnight");
   }
 
   try {
@@ -90,11 +91,16 @@ router.post("/createBreak", authenticateUser, async (req, res) => {
     if (!isTrulyEmpty(breakTime)) {
       breakObj.breakTime = breakTime;
     }
+    console.log("break created successfully", breakObj);
+    const isExist = await ActiveBreak.findOne({ id: req.body.id });
+    console.log({isExist})
+    if (isExist) {
+      const saveBreak = await new Break(breakObj).save();
 
-    // const saveBreak = await breakObj.save();
-    const saveBreak = await new Break(breakObj).save();
-
-    return res.json({ status: "success", data: saveBreak });
+      return res.json({ status: "success", data: saveBreak });
+    } else {
+      return res.json({ status: "error", error: "Failed: Break not exists" });
+    }
   } catch (error) {
     return res.status(500).send("internal server error");
   }
@@ -113,8 +119,7 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
     date,
     count,
   } = req.body;
-  console.log(date);
-  console.log(req.body, "body  ...................");
+  console.log(req.body, "................updateBreak............body");
   try {
     const breakObj = new Break({
       userId,
@@ -131,27 +136,31 @@ router.put("/updateBreak", authenticateUser, async (req, res) => {
 
     console.log(breakObj, "breakObj", req.body._id, "req.body._id");
 
-    const updateBreak = await Break.findByIdAndUpdate(
-      req.body._id,
-      {
-        userId,
-        name,
-        shiftHours,
-        usedbreaks,
-        floorId,
-        breakTime,
-        fine,
-        emergencyShortBreak,
-        date,
-        count,
-      },
-      { new: true } // Return the updated document
-    );
-
-    // const updateBreak = await breakObj.updateOne({ _id: req.body._id });
-    console.log("updatedddddddddddddddddddddddddd");
-
-    return res.json({ status: "success", data: updateBreak });
+    console.log("break updated successfully", breakObj);
+    const isExist = await ActiveBreak.findOne({ id: req.body.id });
+    console.log({isExist})
+    if (isExist) {
+      const updateBreak = await Break.findByIdAndUpdate(
+        req.body._id,
+        {
+          userId,
+          name,
+          shiftHours,
+          usedbreaks,
+          floorId,
+          breakTime,
+          fine,
+          emergencyShortBreak,
+          date,
+          count,
+        },
+        { new: true }  
+      );
+ 
+      return res.json({ status: "success", data: updateBreak });
+    } else {
+      return res.json({ status: "error", error: "Failed: Break not exists" });
+    }
   } catch (error) {
     return res.status(500).send("internal server error");
   }

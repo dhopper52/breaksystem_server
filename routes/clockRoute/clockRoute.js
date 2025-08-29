@@ -122,7 +122,7 @@ router.delete(
   "/deleteClock",
   //  authenticateUser,
   async (req, res) => {
-    console.log(req.body, "....edee  ...............dfff.....body");
+    console.log(req.body, "....deleteClock............body");
     try {
       await ActiveBreak.deleteOne({ id: req.body.id });
       return res.json({ status: "success" });
