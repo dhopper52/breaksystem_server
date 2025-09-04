@@ -15,7 +15,7 @@ const formattedDate = (paramDate) => {
   // return `${day}/${month}/${year}`;
 
   let pstTime = moment(paramDate).tz("Asia/Karachi");
-  console.log(pstTime,"pstTimepstTimepstTimepstTime")
+  // console.log(pstTime,"pstTimepstTimepstTimepstTime")
 
   // Format the date to DD/MM/YYYY
   const formattedDate = pstTime.format("DD/MM/YYYY");

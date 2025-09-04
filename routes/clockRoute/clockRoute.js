@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const ActiveBreak = require("../../models/activeBreakModal/activeBreakModal");
 const mongoose = require("mongoose");
+const authenticateUser = require("../../middleware/authenticateUser");
 
-router.post("/startClock", async (req, res) => {
-  console.log(req.body, "startclock body");
+router.post("/startClock",authenticateUser, async (req, res) => {
+  // console.log(req.body, "startclock body");
 
   const {
     id,
@@ -58,7 +59,7 @@ router.post("/startClock", async (req, res) => {
     breakKey,
   });
 
-  console.log(activeBreakObj);
+  // console.log(activeBreakObj);
 
   try {
     const isExist = await ActiveBreak.findOne({ id: id, floorId: floorId });
@@ -79,11 +80,11 @@ router.post("/startClock", async (req, res) => {
       });
     }
 
-    console.log({ breakLength });
-    console.log({ allowedLength });
+    // console.log({ breakLength });
+    // console.log({ allowedLength });
 
     const actBreak = await activeBreakObj.save();
-    console.log({ actBreak });
+    // console.log({ actBreak });
     return res.json({ status: "success", data: actBreak });
   } catch (error) {
     return res
@@ -92,12 +93,12 @@ router.post("/startClock", async (req, res) => {
   }
 });
 
-router.post("/getClock", async (req, res) => {
-  console.log(req.body, "startclock body");
+router.post("/getClock",authenticateUser, async (req, res) => {
+  // console.log(req.body, "startclock body");
   const { _id } = req.body;
   try {
     const actBreaks = await ActiveBreak.find({ floorId: _id });
-    console.log({ actBreaks });
+    // console.log({ actBreaks });
     return res.json({ status: "success", data: actBreaks });
   } catch (error) {
     return res
@@ -106,10 +107,10 @@ router.post("/getClock", async (req, res) => {
   }
 });
 
-router.post("/getAdminClock", async (req, res) => {
+router.post("/getAdminClock",authenticateUser, async (req, res) => {
   try {
     const actBreaks = await ActiveBreak.find();
-    console.log({ actBreaks });
+    // console.log({ actBreaks });
     return res.json({ status: "success", data: actBreaks });
   } catch (error) {
     return res
@@ -118,21 +119,17 @@ router.post("/getAdminClock", async (req, res) => {
   }
 });
 
-router.delete(
-  "/deleteClock",
-  //  authenticateUser,
-  async (req, res) => {
-    console.log(req.body, "....deleteClock............body");
-    try {
-      await ActiveBreak.deleteOne({ id: req.body.id });
-      return res.json({ status: "success" });
-    } catch (error) {
-      console.error(error);
+router.delete("/deleteClock", authenticateUser, async (req, res) => {
+  // console.log(req.body, "....deleteClock............body");
+  try {
+    await ActiveBreak.deleteOne({ id: req.body.id });
+    return res.json({ status: "success" });
+  } catch (error) {
+    console.error(error);
 
-      return res
-        .status(500)
-        .json({ status: "failed", message: "internal server error" });
-    }
+    return res
+      .status(500)
+      .json({ status: "failed", message: "internal server error" });
   }
-);
+});
 module.exports = router;

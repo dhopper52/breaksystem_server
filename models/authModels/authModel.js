@@ -17,6 +17,14 @@ const authSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  passwordChangedAt: {
+    type: Date,
+    default: Date.now
+  },
+  lastPasswordChange: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model("Auth", authSchema);

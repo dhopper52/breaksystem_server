@@ -37,13 +37,13 @@ const deleteOldData = async () => {
     seventyFiveDaysAgo.getTime() + pktOffset * 60 * 1000
   );
   const pktISOString = localTime.toISOString();
-  console.log({ pktISOString });
+  // console.log({ pktISOString });
 
   try {
     const result = await Break.deleteMany({
       date: { $lt: pktISOString },
     });
-    console.log({ result }, { pktISOString });
+    // console.log({ result }, { pktISOString });
   } catch (error) {
     console.error("Error deleting old data:", error);
   }

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Auth = require("../../models/authModels/authModel");
 const authenticateRole = require("../../middleware/authenticateRole/authenticateRole");
-
+const authenticateUser = require("../../middleware/authenticateUser");
 const jwtString = process.env.JWT_STRING;
 
 router.post("/signup", authenticateRole, async (req, res) => {
@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
   const { floorId, password } = req.body;
   try {
     const user = await Auth.findOne({ _id: floorId });
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return res.json({ status: "failed", message: "Error Floor not Found" });
     }
@@ -50,8 +50,21 @@ router.post("/login", async (req, res) => {
         message: "Please login with correct credentials",
       });
     }
-    const data = { _id: user?._id, floorName: user?.floorName };
-    const authToken = jwt.sign(data, jwtString);
+    
+    // Create JWT with user data and password hash
+    const tokenData = {
+      user: {
+        _id: user._id,
+        floorName: user.floorName,
+        role: user.role
+      },
+      passwordHash: user.password, // Store current password hash
+      iat: Math.floor(Date.now() / 1000), // Issued at
+      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
+    };
+    
+    const authToken = jwt.sign(tokenData, jwtString);
+    
     return res.json({
       status: "success",
       data: {
@@ -62,13 +75,14 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Login error:", error);
     return res
       .status(500)
       .json({ status: "failed", message: "internal server error" });
   }
 });
 
-router.get("/getFloor", async (req, res) => {
+router.get("/getFloor", authenticateUser, async (req, res) => {
   try {
     const floorList = await Auth.find();
 
@@ -87,17 +101,19 @@ router.get("/getFr", async (req, res) => {
   return res.send({ status: "failed", message: "internal server error" });
 });
 
-router.put("/updateFloor", async (req, res) => {
+router.put("/updateFloor", authenticateUser, async (req, res) => {
   const { _id, floorName, password, role } = req.body;
-console.log(req.body)
+  // console.log(req.body);
+  
   try {
     const isExist = await Auth.findOne({ _id: _id });
-    console.log({ isExist });
+    // console.log({ isExist });
     if (!isExist) {
       return res.json({ status: "failed", message: "Floor Doesn't Exist" });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
+    const now = new Date();
 
     const saveAuth = await Auth.findByIdAndUpdate(
       _id,
@@ -106,12 +122,19 @@ console.log(req.body)
         floorName,
         password: hashPassword,
         role: role,
+        passwordChangedAt: now,
+        lastPasswordChange: now
       },
       { new: true }
     );
  
-    return res.json({ status: "success", data: saveAuth });
+    return res.json({ 
+      status: "success", 
+      data: saveAuth,
+      message: "Password updated successfully. All active sessions will be invalidated."
+    });
   } catch (error) {
+    console.error("Update floor error:", error);
     return res
       .status(500)
       .json({ status: "failed", message: "internal server error" });
