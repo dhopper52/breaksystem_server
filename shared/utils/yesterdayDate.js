@@ -28,16 +28,16 @@ const getYesterdayDate = () => {
   // Get current time in Pakistan Standard Time (PST)
   // const pstTime = moment().tz("Asia/Karachi").toDate();
   const pstTime = moment.utc(date).tz("Asia/Karachi").toISOString();
-  console.log("Current time in Pakistan Standard Time:", pstTime);
+  // console.log("Current time in Pakistan Standard Time:", pstTime);
 
   const todayDate = new Date(pstTime);
-  console.log("Today Date:", todayDate);
+  // console.log("Today Date:", todayDate);
 
   // Create a new Date object for yesterday's date
   const yesterdayDate = new Date(todayDate);
   yesterdayDate.setDate(todayDate.getDate() - 1);
 
-  console.log("Yesterday Date:", yesterdayDate);
+  // console.log("Yesterday Date:", yesterdayDate);
 
   return yesterdayDate;
 };
