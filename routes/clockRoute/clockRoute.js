@@ -3,8 +3,9 @@ const router = express.Router();
 const ActiveBreak = require("../../models/activeBreakModal/activeBreakModal");
 const mongoose = require("mongoose");
 const authenticateUser = require("../../middleware/authenticateUser");
+const Break = require("../../models/breakModel/breakModel");
 
-router.post("/startClock",authenticateUser, async (req, res) => {
+router.post("/startClock", authenticateUser, async (req, res) => {
   // console.log(req.body, "startclock body");
 
   const {
@@ -93,7 +94,7 @@ router.post("/startClock",authenticateUser, async (req, res) => {
   }
 });
 
-router.post("/getClock",authenticateUser, async (req, res) => {
+router.post("/getClock", authenticateUser, async (req, res) => {
   // console.log(req.body, "startclock body");
   const { _id } = req.body;
   try {
@@ -107,7 +108,7 @@ router.post("/getClock",authenticateUser, async (req, res) => {
   }
 });
 
-router.post("/getAdminClock",authenticateUser, async (req, res) => {
+router.post("/getAdminClock", authenticateUser, async (req, res) => {
   try {
     const actBreaks = await ActiveBreak.find();
     // console.log({ actBreaks });
@@ -120,10 +121,84 @@ router.post("/getAdminClock",authenticateUser, async (req, res) => {
 });
 
 router.delete("/deleteClock", authenticateUser, async (req, res) => {
-  // console.log(req.body, "....deleteClock............body");
+  const {
+    userId,
+    name,
+    usedbreaks,
+    shiftHours,
+    breakTime,
+    floorId,
+    fine,
+    emergencyShortBreak,
+    date,
+    count,
+    _id,
+  } = req.body;
+  console.log(req.body, "...................dfff.....body");
+
   try {
+    const isExist = await ActiveBreak.findOne({ id: req.body.id });
+    if (!isExist) {
+      console.log("Break not found");
+      // Return success instead of failure since the clock is already not in the database
+      // This prevents issues when the client thinks it needs to be deleted but it's already gone
+      return res.json({
+        status: "success",
+        message: "Break already removed or does not exist",
+      });
+    }
+
+    // Set current date if date is not provided
+    const currentDate = date || new Date().toISOString().split("T")[0];
+
+    // Update or create Break record
+    let updateBreak;
+    if (_id) {
+      console.log("update the existing Break record");
+      // If _id exists, update the existing Break record
+      updateBreak = await Break.findByIdAndUpdate(
+        _id,
+        {
+          userId,
+          name,
+          shiftHours,
+          usedbreaks,
+          floorId,
+          breakTime,
+          fine,
+          emergencyShortBreak,
+          date: currentDate,
+          count,
+        },
+        { new: true } // Return the updated document
+      );
+    } else {
+      console.log("create a new Break record");
+      // If no _id, create a new Break record
+      const breakObj = new Break({
+        userId,
+        name,
+        shiftHours,
+        usedbreaks,
+        floorId,
+        breakTime,
+        fine,
+        emergencyShortBreak,
+        date: currentDate,
+        count,
+      });
+      updateBreak = await breakObj.save();
+    }
+
+    console.log(updateBreak, "updateBreak");
+
+    // Delete the active break
     await ActiveBreak.deleteOne({ id: req.body.id });
-    return res.json({ status: "success" });
+    return res.json({
+      status: "success",
+      message: "Break successfully removed",
+      data: updateBreak,
+    });
   } catch (error) {
     console.error(error);
 
