@@ -149,46 +149,46 @@ router.delete("/deleteClock", authenticateUser, async (req, res) => {
     }
 
     // Set current date if date is not provided
-    const currentDate = date || new Date().toISOString().split("T")[0];
+    // const currentDate = date || new Date().toISOString().split("T")[0];
 
     // Update or create Break record
-    let updateBreak;
-    if (_id) {
-      console.log("update the existing Break record");
-      // If _id exists, update the existing Break record
-      updateBreak = await Break.findByIdAndUpdate(
-        _id,
-        {
-          userId,
-          name,
-          shiftHours,
-          usedbreaks,
-          floorId,
-          breakTime,
-          fine,
-          emergencyShortBreak,
-          date: currentDate,
-          count,
-        },
-        { new: true } // Return the updated document
-      );
-    } else {
-      console.log("create a new Break record");
-      // If no _id, create a new Break record
-      const breakObj = new Break({
-        userId,
-        name,
-        shiftHours,
-        usedbreaks,
-        floorId,
-        breakTime,
-        fine,
-        emergencyShortBreak,
-        date: currentDate,
-        count,
-      });
-      updateBreak = await breakObj.save();
-    }
+    // let updateBreak;
+    // if (_id) {
+    //   console.log("update the existing Break record");
+    //   // If _id exists, update the existing Break record
+    //   updateBreak = await Break.findByIdAndUpdate(
+    //     _id,
+    //     {
+    //       userId,
+    //       name,
+    //       shiftHours,
+    //       usedbreaks,
+    //       floorId,
+    //       breakTime,
+    //       fine,
+    //       emergencyShortBreak,
+    //       date: currentDate,
+    //       count,
+    //     },
+    //     { new: true } // Return the updated document
+    //   );
+    // } else {
+    //   console.log("create a new Break record");
+    //   // If no _id, create a new Break record
+    //   const breakObj = new Break({
+    //     userId,
+    //     name,
+    //     shiftHours,
+    //     usedbreaks,
+    //     floorId,
+    //     breakTime,
+    //     fine,
+    //     emergencyShortBreak,
+    //     date: currentDate,
+    //     count,
+    //   });
+    //   updateBreak = await breakObj.save();
+    // }
 
     console.log(updateBreak, "updateBreak");
 
@@ -197,7 +197,7 @@ router.delete("/deleteClock", authenticateUser, async (req, res) => {
     return res.json({
       status: "success",
       message: "Break successfully removed",
-      data: updateBreak,
+      // data: updateBreak,
     });
   } catch (error) {
     console.error(error);
