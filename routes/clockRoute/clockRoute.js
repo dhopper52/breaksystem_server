@@ -190,7 +190,7 @@ router.delete("/deleteClock", authenticateUser, async (req, res) => {
     //   updateBreak = await breakObj.save();
     // }
 
-    console.log(updateBreak, "updateBreak");
+    // console.log(updateBreak, "updateBreak");
 
     // Delete the active break
     await ActiveBreak.deleteOne({ id: req.body.id });
